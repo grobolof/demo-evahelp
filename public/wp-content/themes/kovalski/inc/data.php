@@ -15,13 +15,13 @@ function kov_settings_sections(): array {
 		array(
 			'title'  => 'Контакты и компания',
 			'fields' => array(
-				array( 'key' => 'brand', 'label' => 'Название', 'type' => 'text', 'default' => 'Kovalski' ),
-				array( 'key' => 'logo_letter', 'label' => 'Буква в логотипе', 'type' => 'text', 'default' => 'К' ),
+				array( 'key' => 'brand', 'label' => 'Название', 'type' => 'text', 'default' => 'EvaHelp' ),
+				array( 'key' => 'logo_letter', 'label' => 'Буква в логотипе', 'type' => 'text', 'default' => 'E' ),
 				array( 'key' => 'tagline', 'label' => 'Подпись', 'type' => 'text', 'default' => 'Эвакуатор 24/7' ),
 				array( 'key' => 'phone_display', 'label' => 'Телефон на сайте', 'type' => 'text', 'default' => '+7 (965) 068-62-59' ),
 				array( 'key' => 'phone', 'label' => 'Телефон для звонка', 'type' => 'text', 'default' => '+79650686259', 'hint' => 'Формат для ссылки tel:, например +79650686259.' ),
-				array( 'key' => 'telegram', 'label' => 'Telegram', 'type' => 'url', 'default' => 'https://t.me/KovalskiSPB' ),
-				array( 'key' => 'telegram_label', 'label' => 'Подпись Telegram', 'type' => 'text', 'default' => '@KovalskiSPB' ),
+				array( 'key' => 'telegram', 'label' => 'Telegram', 'type' => 'url', 'default' => 'https://t.me/EvaHelp' ),
+				array( 'key' => 'telegram_label', 'label' => 'Подпись Telegram', 'type' => 'text', 'default' => '@EvaHelp' ),
 				array( 'key' => 'whatsapp', 'label' => 'WhatsApp', 'type' => 'url', 'default' => 'https://wa.me/79650686259' ),
 				array( 'key' => 'email', 'label' => 'Почта в документах', 'type' => 'email', 'default' => 'Vladkoval314@gmail.com' ),
 				array( 'key' => 'notify_email', 'label' => 'Куда отправлять заявки', 'type' => 'email', 'default' => 'Vladkoval314@gmail.com', 'hint' => 'Письмо о новой заявке. Заявка сохраняется в админке и если письмо не ушло.' ),
@@ -94,12 +94,6 @@ function kov_settings_sections(): array {
 				array( 'key' => 'about_alt_2', 'label' => 'Описание фото 2', 'type' => 'text', 'default' => 'Легковой автомобиль закреплён на эвакуаторе' ),
 				array( 'key' => 'about_image_3', 'label' => 'Фото о компании 3', 'type' => 'image', 'default' => 0, 'fallback' => 'assets/img/06-768x576.png' ),
 				array( 'key' => 'about_alt_3', 'label' => 'Описание фото 3', 'type' => 'text', 'default' => 'Перевозка техники на платформе эвакуатора' ),
-			),
-		),
-		array(
-			'title'  => 'Подвал',
-			'fields' => array(
-				array( 'key' => 'footer_credit', 'label' => 'Строка в подвале', 'type' => 'text', 'default' => '2026 · автор сайта @Uliana_Arist' ),
 			),
 		),
 	);

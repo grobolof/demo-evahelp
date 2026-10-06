@@ -86,7 +86,7 @@ function kov_process_lead(): array {
 	$to    = mb_substr( $to, 0, 160 );
 	$note  = mb_substr( $note, 0, 800 );
 
-	if ( mb_strlen( $name ) < 2 || strlen( $digits ) < 10 || strlen( $digits ) > 15 || mb_strlen( $from ) < 3 || mb_strlen( $to ) < 3 || mb_strlen( $note ) < 3 || ! $consent ) {
+	if ( mb_strlen( $name ) < 2 || ! preg_match( '/^7\d{10}$/', $digits ) || mb_strlen( $from ) < 3 || mb_strlen( $to ) < 3 || mb_strlen( $note ) < 3 || ! $consent ) {
 		return array(
 			'ok'      => false,
 			'message' => 'Проверьте имя, телефон, адреса и согласие на обработку данных.',
@@ -303,15 +303,20 @@ add_action( 'save_post_kov_lead', 'kov_save_lead_admin' );
  * @return array<string, string>
  */
 function kov_lead_columns( array $columns ): array {
-	return array(
+	$columns = array(
 		'cb'         => $columns['cb'] ?? '',
 		'title'      => 'Заявка',
 		'kov_phone'  => 'Телефон',
 		'kov_from'   => 'Откуда',
 		'kov_to'     => 'Куда',
+		'kov_note'   => 'Ситуация',
 		'kov_status' => 'Статус',
 		'date'       => 'Дата',
 	);
+	if ( kov_is_lead_viewer() ) {
+		unset( $columns['cb'] );
+	}
+	return $columns;
 }
 add_filter( 'manage_kov_lead_posts_columns', 'kov_lead_columns' );
 
@@ -330,6 +335,10 @@ function kov_lead_column( string $column, int $post_id ): void {
 	}
 	if ( 'kov_to' === $column ) {
 		echo esc_html( (string) get_post_meta( $post_id, '_kov_to', true ) );
+		return;
+	}
+	if ( 'kov_note' === $column ) {
+		echo esc_html( (string) get_post_meta( $post_id, '_kov_note', true ) );
 		return;
 	}
 	if ( 'kov_status' === $column ) {
@@ -363,7 +372,7 @@ function kov_lead_views( array $views ): array {
 		$custom[ $key ] = '<a href="' . esc_url( $url ) . '"' . $class . '>' . esc_html( $label ) . ' <span class="count">(' . kov_count_leads( $key ) . ')</span></a>';
 	}
 
-	if ( isset( $views['trash'] ) ) {
+	if ( isset( $views['trash'] ) && ! kov_is_lead_viewer() ) {
 		$custom['trash'] = $views['trash'];
 	}
 	return $custom;
@@ -397,6 +406,9 @@ add_action( 'pre_get_posts', 'kov_filter_leads_by_status' );
 function kov_lead_status_actions( array $actions, WP_Post $post ): array {
 	if ( $post->post_type !== 'kov_lead' ) {
 		return $actions;
+	}
+	if ( kov_is_lead_viewer() ) {
+		return array();
 	}
 	$current = kov_lead_status( $post->ID );
 	foreach ( kov_lead_statuses() as $key => $label ) {

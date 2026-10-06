@@ -37,7 +37,8 @@ function kov_register_post_types(): void {
 		array_merge(
 			$common,
 			array(
-				'labels'   => kov_labels(
+				'capabilities' => kov_lead_capabilities(),
+				'labels'       => kov_labels(
 					array(
 						'name'          => 'Заявки',
 						'singular_name' => 'Заявка',

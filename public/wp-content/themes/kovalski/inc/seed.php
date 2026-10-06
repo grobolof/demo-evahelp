@@ -20,18 +20,18 @@ function kov_seed(): void {
 	kov_seed_page(
 		'politika',
 		'Политика обработки персональных данных',
-		'Политика обработки персональных данных сайта эвакуатора Kovalski.',
+		'Политика обработки персональных данных сайта эвакуатора EvaHelp.',
 		kov_seed_policy_html()
 	);
 	kov_seed_page(
 		'soglasie',
 		'Согласие на обработку персональных данных',
-		'Согласие на обработку персональных данных для заявок на эвакуатор Kovalski.',
+		'Согласие на обработку персональных данных для заявок на эвакуатор EvaHelp.',
 		kov_seed_consent_html()
 	);
 
 	if ( get_option( 'blogname' ) === 'Evacuator' ) {
-		update_option( 'blogname', 'Kovalski' );
+		update_option( 'blogname', 'EvaHelp' );
 		update_option( 'blogdescription', 'Эвакуатор 24/7' );
 	}
 

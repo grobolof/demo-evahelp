@@ -66,6 +66,61 @@
 		return;
 	}
 
+	var phoneInput = form.querySelector('input[name="lead_phone"]');
+
+	var formatPhone = function (raw) {
+		var digits = String(raw || "").replace(/\D+/g, "");
+		if (digits.charAt(0) === "8") {
+			digits = "7" + digits.slice(1);
+		}
+		if (digits.charAt(0) !== "7") {
+			digits = "7" + digits;
+		}
+		digits = digits.slice(0, 11);
+		var national = digits.slice(1);
+		var formatted = "+7";
+		if (!national.length) {
+			return formatted;
+		}
+		formatted += " (" + national.slice(0, 3);
+		if (national.length >= 3) {
+			formatted += ")";
+		}
+		if (national.length > 3) {
+			formatted += " " + national.slice(3, 6);
+		}
+		if (national.length > 6) {
+			formatted += "-" + national.slice(6, 8);
+		}
+		if (national.length > 8) {
+			formatted += "-" + national.slice(8, 10);
+		}
+		return formatted;
+	};
+
+	if (phoneInput) {
+		phoneInput.value = formatPhone(phoneInput.value);
+		phoneInput.addEventListener("keydown", function (event) {
+			if (event.key !== "Backspace" && event.key !== "Delete") {
+				return;
+			}
+			event.preventDefault();
+			var digits = phoneInput.value.replace(/\D+/g, "");
+			phoneInput.value = digits.length <= 1 ? "+7" : formatPhone(digits.slice(0, -1));
+		});
+		phoneInput.addEventListener("input", function () {
+			var next = formatPhone(phoneInput.value);
+			if (phoneInput.value !== next) {
+				phoneInput.value = next;
+			}
+		});
+		form.addEventListener("reset", function () {
+			window.setTimeout(function () {
+				phoneInput.value = "+7";
+			}, 0);
+		});
+	}
+
 	var show = function (kind, text) {
 		var note = form.querySelector(".note");
 		if (!note) {
@@ -93,7 +148,7 @@
 		var note = String(data.get("lead_note") || "").trim();
 		var digits = phone.replace(/\D+/g, "");
 
-		if (name.length < 2 || digits.length < 10 || from.length < 3 || to.length < 3 || note.length < 3 || !data.get("lead_consent")) {
+		if (name.length < 2 || !/^7\d{10}$/.test(digits) || from.length < 3 || to.length < 3 || note.length < 3 || !data.get("lead_consent")) {
 			show("err", "Проверьте имя, телефон, адреса и согласие на обработку данных.");
 			return;
 		}

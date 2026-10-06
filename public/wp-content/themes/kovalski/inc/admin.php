@@ -9,9 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function kov_register_admin_menu(): void {
 	add_menu_page(
-		'Kovalski',
-		'Kovalski',
-		'edit_posts',
+		'EvaHelp',
+		'EvaHelp',
+		'kov_view_leads',
 		'kovalski',
 		'kov_render_overview',
 		'dashicons-car',
@@ -64,7 +64,7 @@ function kov_reorder_admin_menu(): void {
 		'edit.php?post_type=kov_faq',
 	);
 
-	$new_count = current_user_can( 'edit_posts' ) ? kov_count_leads( 'new' ) : 0;
+	$new_count = current_user_can( 'kov_view_leads' ) ? kov_count_leads( 'new' ) : 0;
 	$sorted    = array();
 	foreach ( $order as $slug ) {
 		if ( ! isset( $by_slug[ $slug ] ) ) {
@@ -82,6 +82,16 @@ function kov_reorder_admin_menu(): void {
 		if ( ! in_array( $slug, $order, true ) ) {
 			$sorted[] = $item;
 		}
+	}
+	if ( function_exists( 'kov_is_lead_viewer' ) && kov_is_lead_viewer() ) {
+		$sorted = array_values(
+			array_filter(
+				$sorted,
+				static function ( array $item ): bool {
+					return isset( $item[2] ) && 'edit.php?post_type=kov_lead' === $item[2];
+				}
+			)
+		);
 	}
 	$submenu['kovalski'] = $sorted;
 
@@ -144,7 +154,7 @@ function kov_render_overview(): void {
 	);
 	?>
 	<div class="wrap kov-admin">
-		<h1>Kovalski</h1>
+		<h1>EvaHelp</h1>
 		<p>Лендинг эвакуатора открывается на <a href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank" rel="noopener noreferrer">главной странице сайта</a>. Телефон, тексты и фото меняются в «Данных сайта». Карточки услуг, цен, шагов и вопросов — отдельные списки в этом меню. Заявки с формы попадают в «Заявки».</p>
 		<div class="kov-overview-grid">
 			<?php foreach ( $cards as $card ) : ?>
@@ -188,7 +198,7 @@ function kov_render_settings(): void {
 	?>
 	<div class="wrap kov-admin">
 		<h1>Данные сайта</h1>
-		<p>Эти поля выводятся на лендинге. Карточки услуг, цен, преимуществ, шагов и вопросов редактируются в соседних разделах меню Kovalski.</p>
+		<p>Эти поля выводятся на лендинге. Карточки услуг, цен, преимуществ, шагов и вопросов редактируются в соседних разделах меню EvaHelp.</p>
 		<?php settings_errors(); ?>
 		<form action="options.php" method="post">
 			<?php settings_fields( 'kov_settings' ); ?>

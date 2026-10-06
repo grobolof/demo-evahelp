@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<a href="<?php echo esc_url( kov( 'telegram' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( kov( 'telegram_label' ) ); ?></a>
 			<?php endif; ?>
 		</div>
-		<div><?php echo esc_html( kov( 'footer_credit' ) ); ?></div>
 	</div>
 </footer>
 

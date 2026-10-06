@@ -203,7 +203,7 @@ $lead_flag = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lead'] ) 
 					<input type="text" name="lead_name" required maxlength="80" autocomplete="name" placeholder="Как к вам обращаться">
 				</label>
 				<label>Телефон
-					<input type="tel" name="lead_phone" required maxlength="30" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__">
+					<input type="tel" name="lead_phone" required maxlength="18" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__" value="+7">
 				</label>
 				<label>Откуда забрать
 					<input type="text" name="lead_from" required maxlength="160" placeholder="Адрес или ориентир">
