@@ -313,9 +313,6 @@ function kov_lead_columns( array $columns ): array {
 		'kov_status' => 'Статус',
 		'date'       => 'Дата',
 	);
-	if ( kov_is_lead_viewer() ) {
-		unset( $columns['cb'] );
-	}
 	return $columns;
 }
 add_filter( 'manage_kov_lead_posts_columns', 'kov_lead_columns' );
@@ -408,7 +405,16 @@ function kov_lead_status_actions( array $actions, WP_Post $post ): array {
 		return $actions;
 	}
 	if ( kov_is_lead_viewer() ) {
-		return array();
+		if ( ! current_user_can( 'delete_post', $post->ID ) ) {
+			return array();
+		}
+		$url = wp_nonce_url(
+			admin_url( 'admin-post.php?action=kov_lead_delete&post=' . $post->ID ),
+			'kov_lead_delete_' . $post->ID
+		);
+		return array(
+			'kov_delete' => '<a href="' . esc_url( $url ) . '" class="submitdelete" onclick="return confirm(\'Удалить заявку из базы без возможности восстановления?\');">Удалить</a>',
+		);
 	}
 	$current = kov_lead_status( $post->ID );
 	foreach ( kov_lead_statuses() as $key => $label ) {
@@ -447,6 +453,49 @@ function kov_lead_status_action(): void {
 	exit;
 }
 add_action( 'admin_post_kov_lead_status', 'kov_lead_status_action' );
+
+function kov_delete_lead( int $post_id ): bool {
+	$post = get_post( $post_id );
+	if ( ! $post instanceof WP_Post || 'kov_lead' !== $post->post_type ) {
+		return false;
+	}
+	if ( ! current_user_can( 'delete_post', $post_id ) ) {
+		return false;
+	}
+	$result = wp_delete_post( $post_id, true );
+	return $result instanceof WP_Post;
+}
+
+function kov_lead_delete_action(): void {
+	$post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
+	check_admin_referer( 'kov_lead_delete_' . $post_id );
+
+	if ( ! kov_delete_lead( $post_id ) ) {
+		wp_die( esc_html( 'Не удалось удалить заявку.' ) );
+	}
+
+	$back = wp_get_referer();
+	$back = $back ? remove_query_arg( 'kov_deleted', $back ) : admin_url( 'edit.php?post_type=kov_lead' );
+	wp_safe_redirect( add_query_arg( 'kov_deleted', '1', $back ) );
+	exit;
+}
+add_action( 'admin_post_kov_lead_delete', 'kov_lead_delete_action' );
+
+function kov_lead_deleted_notice(): void {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || 'edit-kov_lead' !== $screen->id || ! isset( $_GET['kov_deleted'] ) ) {
+		return;
+	}
+	$count = absint( wp_unslash( $_GET['kov_deleted'] ) );
+	if ( $count < 1 ) {
+		return;
+	}
+	$text = 1 === $count
+		? 'Заявка удалена из базы.'
+		: sprintf( 'Удалено заявок: %d. Записи убраны из базы.', $count );
+	echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $text ) . '</p></div>';
+}
+add_action( 'admin_notices', 'kov_lead_deleted_notice' );
 
 function kov_lead_dashboard_widget(): void {
 	if ( ! current_user_can( 'edit_posts' ) ) {

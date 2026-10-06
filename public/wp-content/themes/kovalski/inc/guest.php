@@ -1,6 +1,6 @@
 <?php
 /**
- * View-only access to the leads list.
+ * Guest access to the leads list: view and permanently delete.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,7 +30,13 @@ function kov_lead_capabilities(): array {
 }
 
 function kov_register_guest_role(): void {
-	$caps = array( 'read' => true, 'kov_view_leads' => true );
+	$caps = array(
+		'read'                        => true,
+		'kov_view_leads'              => true,
+		'delete_kov_leads'            => true,
+		'delete_others_kov_leads'     => true,
+		'delete_published_kov_leads'  => true,
+	);
 	$role = get_role( 'kov_guest' );
 	if ( ! $role ) {
 		add_role( 'kov_guest', 'Просмотр заявок', $caps );
@@ -82,9 +88,13 @@ function kov_guest_lock_admin(): void {
 		return;
 	}
 
+	$action = isset( $_REQUEST['action'] ) ? sanitize_key( wp_unslash( $_REQUEST['action'] ) ) : '';
+	if ( 'admin-post.php' === $script && 'kov_lead_delete' === $action ) {
+		return;
+	}
+
 	$type   = isset( $_GET['post_type'] ) ? sanitize_key( wp_unslash( $_GET['post_type'] ) ) : '';
 	$status = isset( $_GET['post_status'] ) ? sanitize_key( wp_unslash( $_GET['post_status'] ) ) : '';
-	$action = isset( $_REQUEST['action'] ) ? sanitize_key( wp_unslash( $_REQUEST['action'] ) ) : '';
 	$on_list = 'edit.php' === $script && 'kov_lead' === $type && 'trash' !== $status && ! in_array( $action, array( 'edit', 'trash', 'delete', 'untrash' ), true );
 
 	if ( $on_list ) {
@@ -106,7 +116,7 @@ function kov_guest_deny_redirect(): void {
 add_action( 'admin_page_access_denied', 'kov_guest_deny_redirect' );
 
 /**
- * Viewers never edit or delete a lead, including ones they authored.
+ * Viewers never edit a lead. Deleting one is allowed and checked separately.
  *
  * @param string[] $caps    Primitive caps required.
  * @param string   $cap     Capability being checked.
@@ -115,7 +125,7 @@ add_action( 'admin_page_access_denied', 'kov_guest_deny_redirect' );
  * @return string[]
  */
 function kov_guest_block_lead_changes( array $caps, string $cap, int $user_id, array $args ): array {
-	if ( ! in_array( $cap, array( 'edit_post', 'delete_post', 'publish_post' ), true ) ) {
+	if ( ! in_array( $cap, array( 'edit_post', 'publish_post' ), true ) ) {
 		return $caps;
 	}
 	$post_id = isset( $args[0] ) ? (int) $args[0] : 0;
@@ -153,13 +163,67 @@ add_action( 'admin_menu', 'kov_guest_hide_menus', 999 );
  * @param array<string, string> $actions Bulk actions.
  * @return array<string, string>
  */
+function kov_guest_lead_checkbox( bool $show, WP_Post $post ): bool {
+	if ( 'kov_lead' === $post->post_type && kov_is_lead_viewer() && current_user_can( 'delete_post', $post->ID ) ) {
+		return true;
+	}
+	return $show;
+}
+add_filter( 'wp_list_table_show_post_checkbox', 'kov_guest_lead_checkbox', 10, 2 );
+
 function kov_guest_bulk_actions( array $actions ): array {
 	if ( kov_is_lead_viewer() ) {
-		return array();
+		return array( 'kov_delete' => 'Удалить' );
 	}
 	return $actions;
 }
 add_filter( 'bulk_actions-edit-kov_lead', 'kov_guest_bulk_actions' );
+
+/**
+ * @param int[] $post_ids Selected lead IDs.
+ */
+function kov_guest_bulk_delete( string $redirect, string $action, array $post_ids ): string {
+	if ( 'kov_delete' !== $action || ! kov_is_lead_viewer() ) {
+		return $redirect;
+	}
+
+	$deleted = 0;
+	foreach ( $post_ids as $post_id ) {
+		if ( kov_delete_lead( (int) $post_id ) ) {
+			++$deleted;
+		}
+	}
+
+	return add_query_arg( 'kov_deleted', $deleted, $redirect );
+}
+add_filter( 'handle_bulk_actions-edit-kov_lead', 'kov_guest_bulk_delete', 10, 3 );
+
+function kov_guest_delete_confirm(): void {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || 'edit-kov_lead' !== $screen->id || ! kov_is_lead_viewer() ) {
+		return;
+	}
+	?>
+	<script>
+	(function () {
+		['doaction', 'doaction2'].forEach(function (id) {
+			var button = document.getElementById(id);
+			if (!button) {
+				return;
+			}
+			button.addEventListener('click', function (event) {
+				var selectId = id === 'doaction' ? 'bulk-action-selector-top' : 'bulk-action-selector-bottom';
+				var chosen = document.getElementById(selectId);
+				if (chosen && chosen.value === 'kov_delete' && !window.confirm('Удалить выбранные заявки из базы без возможности восстановления?')) {
+					event.preventDefault();
+				}
+			});
+		});
+	}());
+	</script>
+	<?php
+}
+add_action( 'admin_footer-edit.php', 'kov_guest_delete_confirm' );
 
 function kov_guest_admin_bar( WP_Admin_Bar $bar ): void {
 	if ( ! kov_is_lead_viewer() ) {
