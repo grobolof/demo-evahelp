@@ -1,0 +1,70 @@
+.kov-overview-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	gap: 12px;
+	margin: 16px 0 24px;
+}
+
+.kov-stat {
+	display: block;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	padding: 16px;
+	text-decoration: none;
+	color: inherit;
+}
+
+.kov-stat strong {
+	display: block;
+	font-size: 28px;
+	line-height: 1.2;
+}
+
+.kov-stat span,
+.kov-snapshot th {
+	color: #646970;
+	font-weight: 600;
+}
+
+.kov-snapshot {
+	max-width: 760px;
+	margin-bottom: 16px;
+}
+
+.kov-snapshot th {
+	width: 180px;
+}
+
+.kov-image-field img {
+	display: block;
+	max-width: 240px;
+	height: auto;
+	margin-bottom: 8px;
+	border-radius: 8px;
+	background: #1e2430;
+}
+
+.kov-status {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 99px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.6;
+}
+
+.kov-status-new {
+	background: #fff1e6;
+	color: #9a4d00;
+}
+
+.kov-status-work {
+	background: #e7f1ff;
+	color: #0b4f9c;
+}
+
+.kov-status-done {
+	background: #e8f8ee;
+	color: #0d6b32;
+}
