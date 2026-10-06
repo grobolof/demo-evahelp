@@ -26,6 +26,13 @@ services:
       - "3306:3306"
     volumes:
       - ./docker/mariadb/db.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./docker/mariadb/bx.cnf:/etc/mysql/conf.d/bx.cnf
+    command: >
+      bash -c "
+        chmod 644 /etc/mysql/conf.d/bx.cnf &&
+        chown mysql:mysql /etc/mysql/conf.d/bx.cnf &&
+        exec /usr/local/bin/docker-entrypoint.sh mariadbd
+      "
 
   mailpit:
     image: axllent/mailpit
