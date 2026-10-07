@@ -1035,3 +1035,88 @@ body.admin-bar .site-head {
 	opacity: 0.65;
 	cursor: wait;
 }
+
+.access-fab-bar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 16px;
+	z-index: 70;
+	pointer-events: none;
+}
+
+.access-fab-bar .wrap {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.access-fab {
+	pointer-events: auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 34px;
+	padding: 0 12px;
+	border-radius: 10px;
+	background: rgba(214, 40, 40, 0.62);
+	color: #fff;
+	font: 600 13px/1 Manrope, Arial, sans-serif;
+	box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+.access-fab:hover {
+	background: rgba(214, 40, 40, 0.78);
+	color: #fff;
+}
+
+.access-fab:focus-visible {
+	outline: 2px solid var(--text);
+	outline-offset: 3px;
+}
+
+.access-stack {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+	align-items: stretch;
+}
+
+.access-stack .doc-card {
+	max-width: none;
+}
+
+.access-card h1,
+.access-card h2 {
+	margin-top: 0;
+	font-size: clamp(28px, 4vw, 40px);
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+}
+
+.access-card a.access-admin {
+	color: #e23b3b;
+	font-weight: 700;
+}
+
+.access-card a.access-admin span {
+	margin-right: 0.35em;
+}
+
+.access-login {
+	margin-top: 8px;
+}
+
+.access-card code {
+	color: var(--text);
+	font-weight: 700;
+}
+
+@media (max-width: 720px) {
+	.access-stack {
+		grid-template-columns: 1fr;
+	}
+
+	.access-fab-bar {
+		bottom: calc(86px + env(safe-area-inset-bottom));
+	}
+}

@@ -29,6 +29,7 @@ function kov_seed(): void {
 		'Согласие на обработку персональных данных для заявок на эвакуатор EvaHelp.',
 		kov_seed_consent_html()
 	);
+	kov_seed_access_page();
 
 	if ( get_option( 'blogname' ) === 'Evacuator' ) {
 		update_option( 'blogname', 'EvaHelp' );
@@ -39,6 +40,47 @@ function kov_seed(): void {
 }
 add_action( 'init', 'kov_seed', 20 );
 add_action( 'after_switch_theme', 'kov_seed' );
+
+/**
+ * The access page is created after the first seed, so it is ensured separately.
+ */
+function kov_ensure_access_page(): void {
+	if ( get_option( 'kov_app_description_ready' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'app-description' );
+	if ( ! $page instanceof WP_Post ) {
+		$legacy = get_page_by_path( 'access' );
+		if ( $legacy instanceof WP_Post ) {
+			wp_update_post(
+				array(
+					'ID'        => $legacy->ID,
+					'post_name' => 'app-description',
+				)
+			);
+			clean_post_cache( $legacy->ID );
+			$page = get_page_by_path( 'app-description' );
+		} else {
+			kov_seed_access_page();
+			$page = get_page_by_path( 'app-description' );
+		}
+	}
+
+	if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+		update_option( 'kov_app_description_ready', '1' );
+	}
+}
+add_action( 'init', 'kov_ensure_access_page', 21 );
+
+function kov_seed_access_page(): void {
+	kov_seed_page(
+		'app-description',
+		'Доступы',
+		'Вход в админку EvaHelp и права пользователя guest.',
+		''
+	);
+}
 
 /**
  * @param array<int, array<string, mixed>> $items Items.

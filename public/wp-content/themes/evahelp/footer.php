@@ -30,6 +30,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<a class="btn btn-accent" href="<?php echo esc_url( kov_anchor( 'request' ) ); ?>">Заявка</a>
 </div>
 
+<div class="access-fab-bar">
+	<div class="wrap">
+		<a class="access-fab" href="<?php echo esc_url( kov_page_url( 'app-description' ) ); ?>">О проекте</a>
+	</div>
+</div>
+
 <?php wp_footer(); ?>
 </body>
 </html>
