@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'KOV_VERSION', '1.2.6' );
+define( 'KOV_VERSION', '1.2.7' );
 
 require get_template_directory() . '/inc/data.php';
 require get_template_directory() . '/inc/icons.php';

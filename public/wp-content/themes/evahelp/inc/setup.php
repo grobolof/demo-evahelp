@@ -45,6 +45,9 @@ function kov_head(): void {
 	echo "<script>document.documentElement.classList.add('kov-anim');</script>\n";
 	echo "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n";
 	echo "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n";
+	echo '<link rel="icon" href="' . esc_url( get_theme_file_uri( 'assets/favicon.svg' ) ) . '" type="image/svg+xml">' . "\n";
+	echo '<link rel="icon" href="' . esc_url( get_theme_file_uri( 'assets/favicon-32.png' ) ) . '" type="image/png" sizes="32x32">' . "\n";
+	echo '<link rel="apple-touch-icon" href="' . esc_url( get_theme_file_uri( 'assets/apple-touch-icon.png' ) ) . '">' . "\n";
 
 	if ( is_front_page() ) {
 		echo '<meta name="description" content="' . esc_attr( kov( 'meta_description' ) ) . "\">\n";

@@ -16,7 +16,7 @@ function kov_settings_sections(): array {
 			'title'  => 'Контакты и компания',
 			'fields' => array(
 				array( 'key' => 'brand', 'label' => 'Название', 'type' => 'text', 'default' => 'EvaHelp' ),
-				array( 'key' => 'logo_letter', 'label' => 'Буква в логотипе', 'type' => 'text', 'default' => 'E' ),
+				array( 'key' => 'logo_letter', 'label' => 'Буква в логотипе', 'type' => 'text', 'default' => 'EH' ),
 				array( 'key' => 'tagline', 'label' => 'Подпись', 'type' => 'text', 'default' => 'Эвакуатор 24/7' ),
 				array( 'key' => 'phone_display', 'label' => 'Телефон на сайте', 'type' => 'text', 'default' => '+7 (965) 068-62-59' ),
 				array( 'key' => 'phone', 'label' => 'Телефон для звонка', 'type' => 'text', 'default' => '+79650686259', 'hint' => 'Формат для ссылки tel:, например +79650686259.' ),

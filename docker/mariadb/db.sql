@@ -37649,7 +37649,7 @@ INSERT INTO `wp_options` VALUES
 (170,'_site_transient_browser_b3392a84ac294a3771544b2bfbf52ecf','a:10:{s:4:\"name\";s:7:\"unknown\";s:7:\"version\";s:0:\"\";s:8:\"platform\";s:0:\"\";s:10:\"update_url\";s:0:\"\";s:7:\"img_src\";s:0:\"\";s:11:\"img_src_ssl\";s:0:\"\";s:15:\"current_version\";s:0:\"\";s:7:\"upgrade\";b:0;s:8:\"insecure\";b:0;s:6:\"mobile\";b:0;}','off'),
 (171,'_transient_timeout_kov_rl_35476a338e03e65c85448bb8450bd27d','1791295763','off'),
 (172,'_transient_kov_rl_35476a338e03e65c85448bb8450bd27d','2','off'),
-(175,'kov_settings','a:4:{s:5:\"brand\";s:7:\"EvaHelp\";s:11:\"logo_letter\";s:1:\"E\";s:8:\"telegram\";s:20:\"https://t.me/EvaHelp\";s:14:\"telegram_label\";s:8:\"@EvaHelp\";}','auto'),
+(175,'kov_settings','a:4:{s:5:\"brand\";s:7:\"EvaHelp\";s:11:\"logo_letter\";s:2:\"EH\";s:8:\"telegram\";s:20:\"https://t.me/EvaHelp\";s:14:\"telegram_label\";s:8:\"@EvaHelp\";}','auto'),
 (176,'_site_transient_timeout_browser_1a7be5e93f0d5f230f8346cb2297b2a8','1791896887','off'),
 (177,'_site_transient_browser_1a7be5e93f0d5f230f8346cb2297b2a8','a:10:{s:4:\"name\";s:6:\"Chrome\";s:7:\"version\";s:14:\"148.0.7778.280\";s:8:\"platform\";s:9:\"Macintosh\";s:10:\"update_url\";s:29:\"https://www.google.com/chrome\";s:7:\"img_src\";s:43:\"http://s.w.org/images/browsers/chrome.png?1\";s:11:\"img_src_ssl\";s:44:\"https://s.w.org/images/browsers/chrome.png?1\";s:15:\"current_version\";s:2:\"18\";s:7:\"upgrade\";b:0;s:8:\"insecure\";b:0;s:6:\"mobile\";b:0;}','off'),
 (178,'_transient_timeout_kov_mail_ready','1791292763','off'),
