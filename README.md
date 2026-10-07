@@ -5,6 +5,10 @@
 [![MariaDB 11.8](https://img.shields.io/badge/mariadb-11.8-%23003545?style=for-the-badge&logo=mariadb&logoColor=white)](https://mariadb.org/)
 [![Mailpit](https://img.shields.io/badge/mailpit-%23FF6B6B?style=for-the-badge)](https://mailpit.axllent.org/)
 
+👉 <a href="http://evahelp.ci235490.tw1.ru/" target="_blank" rel="noopener noreferrer">Демо-версия</a>
+
+> **Доступ guest.** Логин **`guest@mil.ru`**, пароль **`guest`**. После входа открывается только список заявок.
+
 Это инструкция для тех, кто правит лендинг эвакуатора, принимает заявки и заходит в админку WordPress.  
 Здесь описано, **где что лежит** и **что происходит по нажатию**.
 
