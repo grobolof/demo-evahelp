@@ -12,14 +12,14 @@ function kov_register_admin_menu(): void {
 		'EvaHelp',
 		'EvaHelp',
 		'kov_view_leads',
-		'kovalski',
+		'evahelp',
 		'kov_render_overview',
 		'dashicons-car',
 		26
 	);
 
 	$GLOBALS['kov_settings_hook'] = add_submenu_page(
-		'kovalski',
+		'evahelp',
 		'Данные сайта',
 		'Данные сайта',
 		'manage_options',
@@ -44,17 +44,17 @@ add_action( 'admin_init', 'kov_register_settings' );
 
 function kov_reorder_admin_menu(): void {
 	global $submenu, $menu;
-	if ( ! isset( $submenu['kovalski'] ) || ! is_array( $submenu['kovalski'] ) ) {
+	if ( ! isset( $submenu['evahelp'] ) || ! is_array( $submenu['evahelp'] ) ) {
 		return;
 	}
 
 	$by_slug = array();
-	foreach ( $submenu['kovalski'] as $item ) {
+	foreach ( $submenu['evahelp'] as $item ) {
 		$by_slug[ $item[2] ] = $item;
 	}
 
 	$order = array(
-		'kovalski',
+		'evahelp',
 		'edit.php?post_type=kov_lead',
 		'kov-settings',
 		'edit.php?post_type=kov_service',
@@ -70,7 +70,7 @@ function kov_reorder_admin_menu(): void {
 		if ( ! isset( $by_slug[ $slug ] ) ) {
 			continue;
 		}
-		if ( 'kovalski' === $slug ) {
+		if ( 'evahelp' === $slug ) {
 			$by_slug[ $slug ][0] = 'Обзор';
 		}
 		if ( 'edit.php?post_type=kov_lead' === $slug && $new_count > 0 ) {
@@ -93,11 +93,11 @@ function kov_reorder_admin_menu(): void {
 			)
 		);
 	}
-	$submenu['kovalski'] = $sorted;
+	$submenu['evahelp'] = $sorted;
 
 	if ( $new_count > 0 && is_array( $menu ) ) {
 		foreach ( $menu as $index => $item ) {
-			if ( isset( $item[2] ) && 'kovalski' === $item[2] ) {
+			if ( isset( $item[2] ) && 'evahelp' === $item[2] ) {
 				$menu[ $index ][0] .= kov_admin_count_badge( $new_count );
 			}
 		}
@@ -113,7 +113,7 @@ function kov_admin_assets( string $hook ): void {
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 	$types  = array_merge( array( 'kov_lead' ), kov_content_types() );
 	$is_kov = ( $screen && in_array( $screen->post_type, $types, true ) )
-		|| $hook === 'toplevel_page_kovalski'
+		|| $hook === 'toplevel_page_evahelp'
 		|| $hook === ( $GLOBALS['kov_settings_hook'] ?? '' );
 
 	if ( ! $is_kov ) {
@@ -121,7 +121,7 @@ function kov_admin_assets( string $hook ): void {
 	}
 
 	wp_enqueue_style(
-		'kovalski-admin',
+		'evahelp-admin',
 		get_theme_file_uri( 'assets/css/admin.css' ),
 		array(),
 		KOV_VERSION
@@ -130,7 +130,7 @@ function kov_admin_assets( string $hook ): void {
 	if ( $hook === ( $GLOBALS['kov_settings_hook'] ?? '' ) ) {
 		wp_enqueue_media();
 		wp_enqueue_script(
-			'kovalski-admin',
+			'evahelp-admin',
 			get_theme_file_uri( 'assets/js/admin.js' ),
 			array( 'jquery' ),
 			KOV_VERSION,

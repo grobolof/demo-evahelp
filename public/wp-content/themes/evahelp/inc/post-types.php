@@ -18,7 +18,7 @@ function kov_register_post_types(): void {
 	$common = array(
 		'public'              => false,
 		'show_ui'             => true,
-		'show_in_menu'        => 'kovalski',
+		'show_in_menu'        => 'evahelp',
 		'show_in_nav_menus'   => false,
 		'show_in_admin_bar'   => false,
 		'show_in_rest'        => false,

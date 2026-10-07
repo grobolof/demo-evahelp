@@ -152,7 +152,7 @@ function kov_guest_hide_menus(): void {
 
 	foreach ( $menu as $item ) {
 		$slug = $item[2] ?? '';
-		if ( $slug !== '' && 'kovalski' !== $slug ) {
+		if ( $slug !== '' && 'evahelp' !== $slug ) {
 			remove_menu_page( $slug );
 		}
 	}

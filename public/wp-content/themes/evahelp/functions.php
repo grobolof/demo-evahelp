@@ -1,6 +1,6 @@
 <?php
 /**
- * Kovalski theme bootstrap.
+ * EvaHelp theme bootstrap.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -19,15 +19,15 @@ add_action( 'after_setup_theme', 'kov_setup' );
 
 function kov_assets(): void {
 	wp_enqueue_style(
-		'kovalski-fonts',
+		'evahelp-fonts',
 		'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap',
 		array(),
 		null
 	);
-	wp_enqueue_style( 'kovalski', get_stylesheet_uri(), array( 'kovalski-fonts' ), KOV_VERSION );
-	wp_enqueue_script( 'kovalski', get_theme_file_uri( 'assets/js/main.js' ), array(), KOV_VERSION, true );
+	wp_enqueue_style( 'evahelp', get_stylesheet_uri(), array( 'evahelp-fonts' ), KOV_VERSION );
+	wp_enqueue_script( 'evahelp', get_theme_file_uri( 'assets/js/main.js' ), array(), KOV_VERSION, true );
 	wp_localize_script(
-		'kovalski',
+		'evahelp',
 		'kovLead',
 		array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
