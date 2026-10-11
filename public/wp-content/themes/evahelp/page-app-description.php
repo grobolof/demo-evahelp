@@ -15,7 +15,7 @@ get_header();
 	<div class="wrap access-stack">
 		<article class="doc-card access-card">
 			<h1>Доступы</h1>
-			<p><a class="access-admin" href="<?php echo esc_url( $kov_admin_url ); ?>"><span aria-hidden="true">👉</span> Вход в админку</a></p>
+			<p>👉 <a class="access-admin" href="<?php echo esc_url( $kov_admin_url ); ?>">Вход в админ-панель</a></p>
 			<p class="access-login">Логин: <code>guest@mil.ru</code></p>
 			<p class="access-login">Пароль: <code>guest</code></p>
 		</article>
